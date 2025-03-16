@@ -1,0 +1,154 @@
+"use client";
+import React from "react";
+
+import { useUpload } from "../utilities/runtime-helpers";
+
+function MainComponent() {
+  const { data: user } = useUser();
+  const [profileImage, setProfileImage] = useState("/default-avatar.png");
+  const [upload, { loading: uploadLoading }] = useUpload();
+  const [error, setError] = useState(null);
+
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    try {
+      const { url, error } = await upload({ file });
+      if (error) throw new Error(error);
+      setProfileImage(url);
+    } catch (err) {
+      setError("Erreur lors du téléchargement de l'image");
+      console.error(err);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <div className="mx-auto max-w-4xl p-6">
+        <header className="mb-8 text-center">
+          <h1 className="mb-2 text-4xl font-bold text-gray-800">
+            {user?.name || "John Doe"}
+          </h1>
+          <p className="text-xl text-gray-600">Développeur Full Stack</p>
+        </header>
+
+        <div className="grid gap-8 md:grid-cols-3">
+          <div className="md:col-span-1">
+            <div className="rounded-lg bg-white p-6 shadow-md">
+              <div className="mb-4 text-center">
+                <div className="relative mx-auto mb-4 h-40 w-40">
+                  <img
+                    src={profileImage}
+                    alt="Photo de profil"
+                    className="h-full w-full rounded-full object-cover"
+                  />
+                  <label className="absolute bottom-0 right-0 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-blue-600 text-white hover:bg-blue-700">
+                    <i className="fas fa-camera"></i>
+                    <input
+                      type="file"
+                      className="hidden"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                    />
+                  </label>
+                </div>
+                {error && <p className="text-sm text-red-500">{error}</p>}
+                {uploadLoading && (
+                  <p className="text-sm text-gray-500">Chargement...</p>
+                )}
+              </div>
+
+              <div className="space-y-4">
+                <div>
+                  <h3 className="mb-2 font-semibold text-gray-800">Contact</h3>
+                  <div className="space-y-2">
+                    <a
+                      href="#"
+                      className="flex items-center text-gray-600 hover:text-blue-600"
+                    >
+                      <i className="fab fa-linkedin w-6"></i>
+                      <span>LinkedIn</span>
+                    </a>
+                    <a
+                      href="#"
+                      className="flex items-center text-gray-600 hover:text-blue-600"
+                    >
+                      <i className="fab fa-github w-6"></i>
+                      <span>GitHub</span>
+                    </a>
+                    <a
+                      href="#"
+                      className="flex items-center text-gray-600 hover:text-blue-600"
+                    >
+                      <i className="far fa-envelope w-6"></i>
+                      <span>Email</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="md:col-span-2 space-y-6">
+            <div className="rounded-lg bg-white p-6 shadow-md">
+              <h2 className="mb-4 text-2xl font-bold text-gray-800">
+                À propos
+              </h2>
+              <p className="text-gray-600">
+                Passionné par le développement web et les nouvelles
+                technologies. J'aime créer des solutions innovantes et
+                participer à des projets stimulants.
+              </p>
+            </div>
+
+            <div className="rounded-lg bg-white p-6 shadow-md">
+              <h2 className="mb-4 text-2xl font-bold text-gray-800">
+                Compétences
+              </h2>
+              <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
+                <div className="rounded-lg bg-blue-50 p-3 text-center">
+                  <i className="fab fa-react mb-2 text-2xl text-blue-600"></i>
+                  <p className="text-gray-700">React</p>
+                </div>
+                <div className="rounded-lg bg-blue-50 p-3 text-center">
+                  <i className="fab fa-node mb-2 text-2xl text-blue-600"></i>
+                  <p className="text-gray-700">Node.js</p>
+                </div>
+                <div className="rounded-lg bg-blue-50 p-3 text-center">
+                  <i className="fas fa-database mb-2 text-2xl text-blue-600"></i>
+                  <p className="text-gray-700">SQL</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="rounded-lg bg-white p-6 shadow-md">
+              <h2 className="mb-4 text-2xl font-bold text-gray-800">Projets</h2>
+              <div className="grid gap-4 md:grid-cols-2">
+                <div className="rounded-lg border p-4">
+                  <h3 className="mb-2 font-semibold text-gray-800">
+                    Application POS
+                  </h3>
+                  <p className="text-gray-600">
+                    Système de gestion pour supérette avec suivi des ventes et
+                    des stocks.
+                  </p>
+                </div>
+                <div className="rounded-lg border p-4">
+                  <h3 className="mb-2 font-semibold text-gray-800">
+                    Portfolio Personnel
+                  </h3>
+                  <p className="text-gray-600">
+                    Site web présentant mes réalisations et compétences.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default MainComponent;
