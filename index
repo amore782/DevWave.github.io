@@ -1,154 +1,231 @@
-"use client";
-import React from "react";
-
-import { useUpload } from "../utilities/runtime-helpers";
-
-function MainComponent() {
-  const { data: user } = useUser();
-  const [profileImage, setProfileImage] = useState("/default-avatar.png");
-  const [upload, { loading: uploadLoading }] = useUpload();
-  const [error, setError] = useState(null);
-
-  const handleImageUpload = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    try {
-      const { url, error } = await upload({ file });
-      if (error) throw new Error(error);
-      setProfileImage(url);
-    } catch (err) {
-      setError("Erreur lors du téléchargement de l'image");
-      console.error(err);
-    }
-  };
-
-  return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="mx-auto max-w-4xl p-6">
-        <header className="mb-8 text-center">
-          <h1 className="mb-2 text-4xl font-bold text-gray-800">
-            {user?.name || "John Doe"}
-          </h1>
-          <p className="text-xl text-gray-600">Développeur Full Stack</p>
-        </header>
-
-        <div className="grid gap-8 md:grid-cols-3">
-          <div className="md:col-span-1">
-            <div className="rounded-lg bg-white p-6 shadow-md">
-              <div className="mb-4 text-center">
-                <div className="relative mx-auto mb-4 h-40 w-40">
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DevWave</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body>
+    <div className="flex min-h-screen bg-gray-50">
+      <nav className="fixed w-64 h-screen bg-[#2c3e50] text-white">
+        <div className="text-center p-6 border-b border-[#34495e]">
+          <img
+            src="./profile.jpg"
+            alt="Profile Photo"
+            className="w-36 h-36 rounded-full mx-auto mb-4 border-4 border-[#3498db] object-cover"
+          />
+          <h2 className="text-xl font-bold font-inter mb-2">Votre Nom</h2>
+          <p className="text-gray-300 font-inter">Développeur Web</p>
+        </div>
+        <div className="py-6">
+          {["about", "skills", "projects", "contact"].map((section) => (
+            <button
+              key={section}
+              onClick={() => handleScroll(section)} // define handleScroll in your JavaScript/React
+              className={`w-full text-left px-8 py-4 transition-all hover:bg-[#34495e] hover:pl-10 ${
+                activeSection === section ? "bg-[#34495e]" : ""
+              }`} // ensure activeSection is defined and updated
+            >
+              {section === "about"
+                ? "À Propos"
+                : section === "skills"
+                ? "Compétences"
+                : section === "projects"
+                ? "Projets"
+                : "Contact"}
+            </button>
+          ))}
+        </div>
+      </nav>
+      <main className="ml-64 flex-1">
+        <section id="about" className="py-20">
+          <div className="max-w-3xl mx-auto px-8">
+            <h2 className="text-3xl font-bold mb-6 font-inter">À Propos</h2>
+            <p className="text-gray-700 text-lg font-inter leading-relaxed">
+              Développeur web passionné par la création de sites web modernes et
+              performants.
+            </p>
+          </div>
+        </section>
+        <section id="skills" className="py-20">
+          <div className="max-w-3xl mx-auto px-8">
+            <h2 className="text-3xl font-bold mb-12 font-inter">Compétences</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {["HTML5", "CSS3", "JavaScript", "React", "Git", "Node.js"].map(
+                (skill) => (
+                  <div
+                    key={skill}
+                    className="bg-white p-6 rounded-lg shadow-md hover:-translate-y-1 transition-transform"
+                  >
+                    <h3 className="text-xl font-bold mb-4 font-inter">
+                      {skill}
+                    </h3>
+                    <p className="text-gray-600">
+                      {skill === "HTML5"
+                        ? "Structure et sémantique"
+                        : skill === "CSS3"
+                        ? "Styles et animations"
+                        : skill === "JavaScript"
+                        ? "Programmation front-end"
+                        : skill === "React"
+                        ? "Développement d'applications"
+                        : skill === "Git"
+                        ? "Contrôle de version"
+                        : "Backend et API"}
+                    </p>
+                  </div>
+                )
+              )}
+            </div>
+          </div>
+        </section>
+        <section id="projects" className="py-20 bg-white">
+          <div className="max-w-6xl mx-auto px-8">
+            <h2 className="text-3xl font-bold mb-12 font-inter">Mes Projets</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[1, 2, 3].map((project) => (
+                <div
+                  key={project}
+                  className="bg-white rounded-lg overflow-hidden shadow-md hover:-translate-y-2 transition-transform"
+                >
                   <img
-                    src={profileImage}
-                    alt="Photo de profil"
-                    className="h-full w-full rounded-full object-cover"
+                    src={`./project${project}.jpg`}
+                    alt={`Aperçu du projet ${project}`}
+                    className="w-full h-48 object-cover"
                   />
-                  <label className="absolute bottom-0 right-0 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-blue-600 text-white hover:bg-blue-700">
-                    <i className="fas fa-camera"></i>
-                    <input
-                      type="file"
-                      className="hidden"
-                      accept="image/*"
-                      onChange={handleImageUpload}
-                    />
-                  </label>
-                </div>
-                {error && <p className="text-sm text-red-500">{error}</p>}
-                {uploadLoading && (
-                  <p className="text-sm text-gray-500">Chargement...</p>
-                )}
-              </div>
-
-              <div className="space-y-4">
-                <div>
-                  <h3 className="mb-2 font-semibold text-gray-800">Contact</h3>
-                  <div className="space-y-2">
+                  <div className="p-6">
+                    <h3 className="text-xl font-bold mb-4 font-inter">
+                      Projet {project}
+                    </h3>
+                    <p className="text-gray-600 mb-4">
+                      Description détaillée du projet {project}
+                    </p>
                     <a
                       href="#"
-                      className="flex items-center text-gray-600 hover:text-blue-600"
+                      className="text-[#3498db] hover:text-[#2980b9] font-semibold"
                     >
-                      <i className="fab fa-linkedin w-6"></i>
-                      <span>LinkedIn</span>
-                    </a>
-                    <a
-                      href="#"
-                      className="flex items-center text-gray-600 hover:text-blue-600"
-                    >
-                      <i className="fab fa-github w-6"></i>
-                      <span>GitHub</span>
-                    </a>
-                    <a
-                      href="#"
-                      className="flex items-center text-gray-600 hover:text-blue-600"
-                    >
-                      <i className="far fa-envelope w-6"></i>
-                      <span>Email</span>
+                      En savoir plus →
                     </a>
                   </div>
                 </div>
-              </div>
+              ))}
             </div>
           </div>
-
-          <div className="md:col-span-2 space-y-6">
-            <div className="rounded-lg bg-white p-6 shadow-md">
-              <h2 className="mb-4 text-2xl font-bold text-gray-800">
-                À propos
-              </h2>
-              <p className="text-gray-600">
-                Passionné par le développement web et les nouvelles
-                technologies. J'aime créer des solutions innovantes et
-                participer à des projets stimulants.
-              </p>
-            </div>
-
-            <div className="rounded-lg bg-white p-6 shadow-md">
-              <h2 className="mb-4 text-2xl font-bold text-gray-800">
-                Compétences
-              </h2>
-              <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
-                <div className="rounded-lg bg-blue-50 p-3 text-center">
-                  <i className="fab fa-react mb-2 text-2xl text-blue-600"></i>
-                  <p className="text-gray-700">React</p>
-                </div>
-                <div className="rounded-lg bg-blue-50 p-3 text-center">
-                  <i className="fab fa-node mb-2 text-2xl text-blue-600"></i>
-                  <p className="text-gray-700">Node.js</p>
-                </div>
-                <div className="rounded-lg bg-blue-50 p-3 text-center">
-                  <i className="fas fa-database mb-2 text-2xl text-blue-600"></i>
-                  <p className="text-gray-700">SQL</p>
-                </div>
+        </section>
+        <section id="contact" className="py-20 bg-gray-50">
+          <div className="max-w-lg mx-auto px-4">
+            <h2 className="text-3xl font-bold mb-12 font-inter text-center">
+              Contact
+            </h2>
+            <form onSubmit={handleFormSubmit} className="space-y-6">
+              <div>
+                <label htmlFor="name" className="block text-sm font-inter mb-2">
+                  Nom
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={formData.name}
+                  onChange={(e) =>
+                    setFormData((prev) => ({ ...prev, name: e.target.value }))
+                  }
+                  className="w-full px-4 py-2 border border-gray-200 rounded-md"
+                  required
+                />
               </div>
-            </div>
-
-            <div className="rounded-lg bg-white p-6 shadow-md">
-              <h2 className="mb-4 text-2xl font-bold text-gray-800">Projets</h2>
-              <div className="grid gap-4 md:grid-cols-2">
-                <div className="rounded-lg border p-4">
-                  <h3 className="mb-2 font-semibold text-gray-800">
-                    Application POS
-                  </h3>
-                  <p className="text-gray-600">
-                    Système de gestion pour supérette avec suivi des ventes et
-                    des stocks.
-                  </p>
-                </div>
-                <div className="rounded-lg border p-4">
-                  <h3 className="mb-2 font-semibold text-gray-800">
-                    Portfolio Personnel
-                  </h3>
-                  <p className="text-gray-600">
-                    Site web présentant mes réalisations et compétences.
-                  </p>
-                </div>
+              <div>
+                <label htmlFor="email" className="block text-sm font-inter mb-2">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={(e) =>
+                    setFormData((prev) => ({ ...prev, email: e.target.value }))
+                  }
+                  className="w-full px-4 py-2 border border-gray-200 rounded-md"
+                  required
+                />
               </div>
-            </div>
+              <div>
+                <label htmlFor="message" className="block text-sm font-inter mb-2">
+                  Message
+                </label>
+                <textarea
+                  id="message"
+                  name="message"
+                  value={formData.message}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      message: e.target.value,
+                    }))
+                  }
+                  className="w-full px-4 py-2 border border-gray-200 rounded-md h-32"
+                  required
+                ></textarea>
+              </div>
+              {submitError && (
+                <p className="text-red-500 font-inter">{submitError}</p>
+              )}
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full bg-gray-900 text-white font-inter py-2 px-4 rounded-md hover:bg-gray-800"
+              >
+                {isSubmitting ? "Envoi..." : "Envoyer"}
+              </button>
+            </form>
           </div>
-        </div>
-      </div>
+        </section>
+        <footer className="py-8 bg-gray-900 text-white">
+          <div className="max-w-3xl mx-auto px-4 text-center">
+            <div className="space-x-6 mb-4">
+              <a href="#" className="hover:text-gray-300">
+                GitHub
+              </a>
+              <a href="#" className="hover:text-gray-300">
+                LinkedIn
+              </a>
+              <a href="#" className="hover:text-gray-300">
+                Twitter
+              </a>
+            </div>
+            <p className="text-sm text-gray-400 font-inter">
+              &copy; 2025 Votre Nom. Tous droits réservés.
+            </p>
+          </div>
+        </footer>
+      </main>
     </div>
-  );
-}
+    <style jsx global>{`
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
 
-export default MainComponent;
+      section {
+        animation: fadeIn 0.6s ease-out forwards;
+      }
+
+      .hover\\:-translate-y-1:hover,
+      .hover\\:-translate-y-2:hover {
+        transition: transform 0.3s ease;
+      }
+    `}</style>
+  </body>
+</html>
