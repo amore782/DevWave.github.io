@@ -1,12 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Website</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DevWave | Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f9;
+    }
+    header {
+      background-color: #2c3e50;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    header h1 {
+      font-size: 3rem;
+      margin: 0;
+    }
+    .content {
+      max-width: 1200px;
+      margin: 50px auto;
+      padding: 0 20px;
+    }
+    .about, .projects, .contact {
+      margin-bottom: 50px;
+    }
+    .about h2, .projects h2, .contact h2 {
+      font-size: 2.5rem;
+      color: #2c3e50;
+      margin-bottom: 20px;
+    }
+    .about p, .projects p {
+      font-size: 1.2rem;
+      color: #34495e;
+      line-height: 1.8;
+    }
+    .projects .project {
+      background-color: white;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 30px;
+    }
+    .projects .project img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+    .projects .project .project-info {
+      padding: 20px;
+    }
+    .projects .project .project-info h3 {
+      font-size: 1.8rem;
+      color: #3498db;
+    }
+    .projects .project .project-info p {
+      color: #7f8c8d;
+    }
+    .contact form {
+      display: flex;
+      flex-direction: column;
+    }
+    .contact input, .contact textarea {
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    .contact button {
+      padding: 15px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1.1rem;
+    }
+    footer {
+      background-color: #2c3e50;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+  </style>
 </head>
 <body>
-    <h1>Welcome to My Website</h1>
-    <p>This is my new website!</p>
+
+<header>
+  <h1>DevWave | Web Developer</h1>
+</header>
+
+<div class="content">
+  <!-- About Section -->
+  <section class="about">
+    <h2>About Me</h2>
+    <p>Hello! I'm a passionate web developer with experience in front-end and back-end development. I specialize in creating user-friendly, responsive, and performance-optimized websites. I have a strong foundation in JavaScript, React, and Node.js, and I enjoy building creative web applications.</p>
+  </section>
+
+  <!-- Projects Section -->
+  <section class="projects">
+    <h2>My Projects</h2>
+
+    <div class="project">
+      <img src="https://via.placeholder.com/800x200" alt="Project 1">
+      <div class="project-info">
+        <h3>Project 1</h3>
+        <p>This is a brief description of Project 1. It was built using React and Node.js, with a focus on performance and scalability.</p>
+      </div>
+    </div>
+
+    <div class="project">
+      <img src="https://via.placeholder.com/800x200" alt="Project 2">
+      <div class="project-info">
+        <h3>Project 2</h3>
+        <p>This is a brief description of Project 2. It is a full-stack application that includes user authentication and real-time chat functionality.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="contact">
+    <h2>Contact Me</h2>
+    <form action="#" method="POST">
+      <input type="text" name="name" placeholder="Your Name" required>
+      <input type="email" name="email" placeholder="Your Email" required>
+      <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+  </section>
+</div>
+
+<footer>
+  <p>&copy; 2025 DevWave | All Rights Reserved</p>
+</footer>
+
 </body>
 </html>
